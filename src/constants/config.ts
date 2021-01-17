@@ -29,6 +29,13 @@ export const videoConfig: IVideoConfig[] = [
         ],
         target: null,
       },
+      'y4YqWXmF9Dg': {
+        start: 1499,
+        milestones: [
+          38
+        ],
+        target: null,
+      },
     }
   },
   {

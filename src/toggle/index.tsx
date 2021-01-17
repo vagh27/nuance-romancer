@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // Config
+import { HEADER_HEIGHT } from '../constants/styles';
 import { videoConfig, IVideoConfig } from '../constants/config';
 
 export const Toggle = ({ activeIndex, setActiveIndex }: { activeIndex: number, setActiveIndex: (index: number) => void }) => {
@@ -24,6 +25,7 @@ export const Toggle = ({ activeIndex, setActiveIndex }: { activeIndex: number, s
 const StyledToggle = styled.ul`
   background: #efefef;
   display: flex;
+  height: ${HEADER_HEIGHT}px;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -43,7 +45,7 @@ const StyledToggleButton = styled.button`
   display: block;
   height: 100%;
   outline: none;
-  padding: 20px;
+  padding: 0 20px;
   text-align: left;
   width: 100%;
 

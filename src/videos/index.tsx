@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import YouTube from 'react-youtube';
+import styled from 'styled-components';
 
 
 // Config
 import { videoConfig, IVideoList } from '../constants/config';
+import { HEADER_HEIGHT } from '../constants/styles';
 
 export const Videos = ({ activeIndex }: { activeIndex: number }) => {
   const [videos, setVideos] = useState<IVideoList>(videoConfig[activeIndex].videos);
@@ -13,8 +15,6 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
   }, [activeIndex]);
 
   const opts = {
-    height: '390',
-    width: '640',
     playerVars: {
       autoplay: 0,
     },
@@ -52,18 +52,20 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
 
   return (
     <>
-      {Object.keys(videos).map((key, index) => {
-        return (
-          <YouTube
-            key={index}
-            videoId={key}
-            // @ts-ignore
-            opts={opts}
-            onReady={e => onReady(e, key)}
-            onStateChange={e => onReady(e, key)}
-          />
-        );
-      })}
+      <StyledVideoContainer>
+        {Object.keys(videos).map((key, index) => {
+          return (
+            <StyledYouTube
+              key={index}
+              videoId={key}
+              // @ts-ignore
+              opts={opts}
+              onReady={e => onReady(e, key)}
+              onStateChange={e => onReady(e, key)}
+            />
+          );
+        })}
+      </StyledVideoContainer>
 
       <button
         onClick={playAll}
@@ -83,3 +85,19 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
     </>
   );
 }
+
+const StyledVideoContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
+  height: calc(100vh - ${HEADER_HEIGHT}px);
+`;
+
+const StyledYouTube = styled(YouTube)`
+  height: 100%;
+  width: 100%;
+  iframe {
+    height: 100%;
+    width: 100%;
+  }
+`;
