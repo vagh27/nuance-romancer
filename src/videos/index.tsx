@@ -37,6 +37,12 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
     });
   }
 
+  // const staggerAll = () => {
+  //   Object.keys(videos).forEach(key => {
+  //     videos[key].target.playVideo();
+  //   });
+  // }
+
   const pauseAll = () => {
     Object.keys(videos).forEach(key => {
       videos[key].target.pauseVideo();
@@ -72,6 +78,11 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
       >
         Play All
       </button>
+      {/* <button
+        onClick={staggerAll}
+      >
+        Stagger All
+      </button> */}
       <button
         onClick={pauseAll}
       >
