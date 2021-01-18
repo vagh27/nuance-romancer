@@ -7,7 +7,8 @@ export interface IVideoList {
   [key: string]: {
     start: number;
     milestones: number[];
-    target: any | null;
+    target?: any;
+    status?: number;
   }
 }
 
@@ -20,26 +21,22 @@ export const videoConfig: IVideoConfig[] = [
         milestones: [
           46
         ],
-        target: null,
       },
       'o6_lbrlehsg': {
         start: 1485,
         milestones: [
           38
         ],
-        target: null,
       },
       'y4YqWXmF9Dg': {
         start: 1499,
         milestones: [
           38
         ],
-        target: null,
       },
       'n94vcKmDJwo': {
         start: 1387,
         milestones: [],
-        target: null,
       }
     }
   },
@@ -51,14 +48,12 @@ export const videoConfig: IVideoConfig[] = [
         milestones: [
           46
         ],
-        target: null,
       },
       'GhBXx-2PadM': {
         start: 3,
         milestones: [
           38
         ],
-        target: null,
       },
     },
   }

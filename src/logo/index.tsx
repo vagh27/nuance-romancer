@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // Config
+import { LOGO_WIDTH } from '../constants/styles';
 
 export const Logo = () => {
   return (
@@ -12,8 +13,8 @@ export const Logo = () => {
 }
 
 const StyledLogoContainer = styled.div`
-  background: #dabcbc;
-  width: 60px;
+  background: yellow;
+  width: ${LOGO_WIDTH}px;
 
   h1 {
     bottom: 220px;
