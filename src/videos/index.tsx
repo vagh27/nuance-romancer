@@ -148,10 +148,12 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
       </StyledVideoStatus>
       <StyledVideoContainer>
         {Object.keys(videos).map((key, index) => {
+          const isActive = videos[key].status === 1 && !videos[key].muted;
           return (
             <StyledYouTube
               key={index}
               videoId={key}
+              isActive={isActive}
               // @ts-ignore
               opts={opts}
               onReady={e => onReady(e, key)}
@@ -212,6 +214,8 @@ const StyledVideoContainer = styled.div`
 
 const StyledYouTube = styled(YouTube)`
   height: 100%;
+  opacity: ${(props: { isActive: boolean }) => props.isActive ? 1 : 0.85 };
+  transition: all .1s linear;
   width: 100%;
 
   iframe {
@@ -229,6 +233,7 @@ const StyledVideoStatus = styled.div`
   position: fixed;
   top: calc(50vh - ${WH / 2}px + ${HEADER_HEIGHT / 2}px);
   width: ${WH}px;
+  z-index: 1;
 `;
 
 const StyledVideoStatusButton = styled.button`
