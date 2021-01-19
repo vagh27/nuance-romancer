@@ -6,8 +6,11 @@ import { Logo } from './logo';
 import { Videos } from './videos';
 import { Toggle } from './toggle';
 
+import { videoConfig, IVideoConfig } from './constants/config';
+
 function App() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const index = videoConfig.find((config: IVideoConfig) => config.slug === window.location.hash.replace('#', ''))?.id || 0;
+  const [activeIndex, setActiveIndex] = useState(index);
 
   return (
     <StyledLayout>

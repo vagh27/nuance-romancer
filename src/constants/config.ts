@@ -1,4 +1,6 @@
 export interface IVideoConfig {
+  id: number;
+  slug: string;
   name: string;
   videos: IVideoList;
 }
@@ -9,11 +11,14 @@ export interface IVideoList {
     milestones: number[];
     target?: any;
     status?: number;
+    muted?: boolean;
   }
 }
 
 export const videoConfig: IVideoConfig[] = [
   {
+    id: 0,
+    slug: 'brahms-pc2',
     name: 'Brahms: Piano Concerto No. 2 in B-flat major',
     videos: {
       'BszBccYHuAk': {
@@ -41,6 +46,8 @@ export const videoConfig: IVideoConfig[] = [
     }
   },
   {
+    id: 1,
+    slug: 'rachmaninov-prelude',
     name: 'Rachmaninov: Prelude in G minor',
     videos: {
       'mxnL7UrkmY4': {

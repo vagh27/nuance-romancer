@@ -11,7 +11,10 @@ export const Toggle = ({ activeIndex, setActiveIndex }: { activeIndex: number, s
       {videoConfig.map((videoConfig: IVideoConfig, index: number) => (
         <StyledToggleItem key={index}>
           <StyledToggleButton
-            onClick={() => setActiveIndex(index)}
+            onClick={() => {
+              window.location.hash = `#${videoConfig.slug}`;
+              window.location.reload();
+            }}
             isActive={activeIndex === index}
           >
             {videoConfig.name}

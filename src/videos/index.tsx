@@ -2,15 +2,13 @@ import { useState, useEffect } from 'react';
 import YouTube from 'react-youtube';
 import styled from 'styled-components';
 
-
 // Config
 import { videoConfig, IVideoList } from '../constants/config';
 import { HEADER_HEIGHT, LOGO_WIDTH } from '../constants/styles';
 
 export const Videos = ({ activeIndex }: { activeIndex: number }) => {
   const [videos, setVideos] = useState<IVideoList>(videoConfig[activeIndex].videos);
-
-  let stagger: any;
+  const [interval, assignInterval] = useState<number | undefined>()
 
   useEffect(() => {
     setVideos(videoConfig[activeIndex].videos);
@@ -26,9 +24,9 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
     const newVideos = Object.assign({}, videos);
 
     if (!newVideos[key].target) {
-      console.log('Initializing Videos');
       newVideos[key].target = e.target;
       newVideos[key].status = e.target.getPlayerState();
+      newVideos[key].muted = e.target.isMuted();
       e.target.seekTo(videos[key].start);
       e.target.pauseVideo();
       setVideos(newVideos);
@@ -38,6 +36,7 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
   const onStateChange = (e: any, key: string) => {
     const newVideos = Object.assign({}, videos);
     newVideos[key].status = e.target.getPlayerState();
+    newVideos[key].muted = e.target.isMuted();
     setVideos(newVideos);
   }
 
@@ -55,24 +54,60 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
     videoArray[toPlay].target.playVideo();
     
     // Stagger the playing of the rest of the videos
-    stagger = setInterval(() => {
+    const interval = window.setInterval(function() {
       videoArray[toPlay].target.pauseVideo();
       
       toPlay = videoArray.length === toPlay + 1 ? 0 : ++toPlay;
       videoArray[toPlay].target.playVideo();
 
     }, 5000);
+
+    assignInterval(interval);
+  }
+
+  const progressAll = () => {
+    const videoArray = Object.keys(videos).map(key => ({
+      key,
+      ...videos[key],
+    }));
+    let toMute = 0;
+
+    // Play and mute all videos
+    Object.keys(videos).forEach(key => {
+      videos[key].target.mute();
+      videos[key].target.playVideo();
+    });
+
+    // Unmute the first one
+    videos[videoArray[toMute].key].target.unMute();
+    
+    // Stagger the unmuting of the rest of the videos
+    const interval = window.setInterval(() => {
+      const newVideos = Object.assign({}, videos);
+      newVideos[videoArray[toMute].key].target.mute();
+      newVideos[videoArray[toMute].key].muted = true;
+      
+      toMute = videoArray.length === toMute + 1 ? 0 : ++toMute;
+      newVideos[videoArray[toMute].key].target.unMute();
+      newVideos[videoArray[toMute].key].muted = false;
+
+      setVideos(newVideos);
+    }, 5000);
+
+    assignInterval(interval);
   }
 
   const pauseAll = () => {
+    // Pause videos in state
     Object.keys(videos).forEach(key => {
       videos[key].target.pauseVideo();
     });
 
-    clearInterval(stagger);
+    // Clear any intervals
+    clearInterval(interval);
   }
 
-  const toggleVideo = (key: string, status?: number) => {
+  const toggleVideo  = (key: string, status?: number) => {
     if (status === 1) {
       videos[key].target.pauseVideo();
     } else {
@@ -82,10 +117,16 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
 
   const reset = () => {
     Object.keys(videos).forEach(key => {
+      videos[key].target.unMute();
       videos[key].target.seekTo(videos[key].start);
-      videos[key].target.playVideo();
+      videos[key].target.pauseVideo();
     });
+
+    // Clear any intervals
+    clearInterval(interval);
   }
+
+  console.log('Rerendering');
 
   return (
     <>
@@ -93,13 +134,14 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
         <StyledVideoStatus>
           {Object.keys(videos).map((key, index) => {
             const status = videos[key].status;
+            const muted = videos[key].muted;
             return (
               <StyledVideoStatusButton
                 key={index}
                 onClick={() => toggleVideo(key, status)}
                 isPlaying={status === 1}
               >
-                {status === 1 ? '||' : '|>'}
+                {muted ? 'M' : 'S'}
               </StyledVideoStatusButton>
             );
           })}
@@ -127,6 +169,11 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
         onClick={staggerAll}
       >
         Stagger All
+      </button>
+      <button
+        onClick={progressAll}
+      >
+        Progress All
       </button>
       <button
         onClick={pauseAll}
