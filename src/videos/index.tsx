@@ -25,6 +25,7 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
 
     if (!newVideos[key].target) {
       newVideos[key].target = e.target;
+      newVideos[key].muted = e.target.unMute();
       newVideos[key].status = e.target.getPlayerState();
       newVideos[key].muted = e.target.isMuted();
       e.target.seekTo(videos[key].start);
@@ -130,22 +131,22 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
 
   return (
     <>
+      <StyledVideoStatus>
+        {Object.keys(videos).map((key, index) => {
+          const status = videos[key].status;
+          const muted = videos[key].muted;
+          return (
+            <StyledVideoStatusButton
+              key={index}
+              onClick={() => toggleVideo(key, status)}
+              isPlaying={status === 1}
+            >
+              {muted ? 'M' : 'S'}
+            </StyledVideoStatusButton>
+          );
+        })}
+      </StyledVideoStatus>
       <StyledVideoContainer>
-        <StyledVideoStatus>
-          {Object.keys(videos).map((key, index) => {
-            const status = videos[key].status;
-            const muted = videos[key].muted;
-            return (
-              <StyledVideoStatusButton
-                key={index}
-                onClick={() => toggleVideo(key, status)}
-                isPlaying={status === 1}
-              >
-                {muted ? 'M' : 'S'}
-              </StyledVideoStatusButton>
-            );
-          })}
-        </StyledVideoStatus>
         {Object.keys(videos).map((key, index) => {
           return (
             <StyledYouTube
@@ -194,11 +195,25 @@ const StyledVideoContainer = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: 1fr;
   height: calc(100vh - ${HEADER_HEIGHT}px);
+
+  > div {
+    &:nth-child(1) {
+      border-right: 1px solid yellow;
+    }
+    &:nth-child(3) {
+      border-top: 1px solid yellow;
+      border-right: 1px solid yellow;
+    }
+    &:nth-child(4) {
+      border-top: 1px solid yellow;
+    }
+  }
 `;
 
 const StyledYouTube = styled(YouTube)`
   height: 100%;
   width: 100%;
+
   iframe {
     height: 100%;
     width: 100%;
@@ -222,13 +237,13 @@ const StyledVideoStatusButton = styled.button`
   width: 50%;
   
   &:nth-child(1) {
-    border-right: 1px solid black;
+    border-right: 1px solid yellow;
   }
   &:nth-child(3) {
-    border-top: 1px solid black;
-    border-right: 1px solid black;
+    border-top: 1px solid yellow;
+    border-right: 1px solid yellow;
   }
   &:nth-child(4) {
-    border-top: 1px solid black;
+    border-top: 1px solid yellow;
   }
 `;
