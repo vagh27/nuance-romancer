@@ -18,7 +18,7 @@ export interface IVideoList {
 export const videoConfig: IVideoConfig[] = [
   {
     id: 0,
-    slug: 'brahms-pc2',
+    slug: 'brahms-piano-concerto-2',
     name: 'Brahms: Piano Concerto No. 2 in B-flat major',
     videos: {
       'BszBccYHuAk': {
@@ -58,6 +58,37 @@ export const videoConfig: IVideoConfig[] = [
       },
       'GhBXx-2PadM': {
         start: 3,
+        milestones: [
+          38
+        ],
+      },
+    },
+  },
+  {
+    id: 2,
+    slug: 'chopin-ballade-1',
+    name: 'Chopin: Ballade No. 1 in G minor',
+    videos: {
+      'Ce8p0VcTbuA': {
+        start: 2,
+        milestones: [
+          46
+        ],
+      },
+      'bvtdjIIcgWQ': {
+        start: 4,
+        milestones: [
+          38
+        ],
+      },
+      'taY5oHleS4I': {
+        start: 6,
+        milestones: [
+          38
+        ],
+      },
+      'BK42YaHaJ5M': {
+        start: 5,
         milestones: [
           38
         ],
