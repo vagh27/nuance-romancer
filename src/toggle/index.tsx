@@ -6,53 +6,38 @@ import { HEADER_HEIGHT } from '../constants/styles';
 import { videoConfig, IVideoConfig } from '../constants/config';
 
 export const Toggle = ({ activeIndex, setActiveIndex }: { activeIndex: number, setActiveIndex: (index: number) => void }) => {
+  
+
   return (
-    <StyledToggle>
+    <StyledSelect
+      onChange={(e) => {
+        window.location.hash = `#${e.target.value}`;
+        window.location.reload();
+      }}
+    >
       {videoConfig.map((videoConfig: IVideoConfig, index: number) => (
-        <StyledToggleItem key={index}>
-          <StyledToggleButton
-            onClick={() => {
-              window.location.hash = `#${videoConfig.slug}`;
-              window.location.reload();
-            }}
-            isActive={activeIndex === index}
-          >
-            {videoConfig.name}
-          </StyledToggleButton>
-        </StyledToggleItem>
+        <StyledSelectOption
+          key={index}
+          value={videoConfig.slug}
+          selected={activeIndex === index}
+        >
+          {videoConfig.name}
+        </StyledSelectOption>
       ))}
-    </StyledToggle>
+    </StyledSelect>
   );
 }
 
-const StyledToggle = styled.ul`
+const StyledSelect = styled.select`
   background: #efefef;
-  display: flex;
+  font-size: 16px;
+  font-weight: bold;
   height: ${HEADER_HEIGHT}px;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-`;
-
-const StyledToggleItem = styled.li`
-  flex: 1;
-  list-style-type: none;
-`;
-
-const StyledToggleButton = styled.button`
-  background: none;
-  border: none;
-  border-bottom: 1px solid red;
-  border-left: 1px solid red;
-  cursor: pointer;
-  display: block;
-  height: 100%;
-  outline: none;
   padding: 0 20px;
-  text-align: left;
+  text-transform: uppercase;
   width: 100%;
+`;
 
-  ${(props: { isActive: boolean }) => props.isActive && `
-    text-decoration: underline;
-  `}
+const StyledSelectOption = styled.option`
+
 `;

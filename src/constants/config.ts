@@ -81,8 +81,14 @@ export const videoConfig: IVideoConfig[] = [
           38
         ],
       },
-      'taY5oHleS4I': {
-        start: 6,
+      // 'taY5oHleS4I': {
+      //   start: 6,
+      //   milestones: [
+      //     38
+      //   ],
+      // },
+      '3Ag-a76PQFg': {
+        start: 15,
         milestones: [
           38
         ],
