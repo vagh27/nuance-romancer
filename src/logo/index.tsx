@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // Config
-import { LOGO_WIDTH } from '../constants/styles';
+import { IThemeProvider } from 'constants/styles';
 
 export const Logo = () => {
   return (
@@ -13,8 +13,8 @@ export const Logo = () => {
 }
 
 const StyledLogoContainer = styled.div`
-  background: yellow;
-  width: ${LOGO_WIDTH}px;
+  background: ${(props: IThemeProvider ) => props.theme.primaryColor};
+  width: ${(props: IThemeProvider) => props.theme.logoWidth}px;
 
   h1 {
     bottom: 220px;

@@ -3,12 +3,12 @@ import YouTube from 'react-youtube';
 import styled from 'styled-components';
 
 // Config
-import { videoConfig, IVideoList } from '../constants/config';
-import { HEADER_HEIGHT, LOGO_WIDTH } from '../constants/styles';
+import { videoConfig, IVideoList } from 'constants/config';
+import { IThemeProvider } from 'constants/styles';
 
 export const Videos = ({ activeIndex }: { activeIndex: number }) => {
   const [videos, setVideos] = useState<IVideoList>(videoConfig[activeIndex].videos);
-  const [interval, assignInterval] = useState<number | undefined>()
+  const [interval, assignInterval] = useState<number | undefined>();
 
   useEffect(() => {
     setVideos(videoConfig[activeIndex].videos);
@@ -127,8 +127,6 @@ export const Videos = ({ activeIndex }: { activeIndex: number }) => {
     clearInterval(interval);
   }
 
-  console.log('Rerendering');
-
   return (
     <>
       <StyledVideoStatus>
@@ -196,18 +194,18 @@ const StyledVideoContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: 1fr;
-  height: calc(100vh - ${HEADER_HEIGHT}px);
+  height: calc(100vh - ${(props: IThemeProvider) => props.theme.headerHeight}px);
 
   > div {
     &:nth-child(1) {
-      border-right: 1px solid yellow;
+      border-right: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
     }
     &:nth-child(3) {
-      border-top: 1px solid yellow;
-      border-right: 1px solid yellow;
+      border-top: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
+      border-right: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
     }
     &:nth-child(4) {
-      border-top: 1px solid yellow;
+      border-top: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
     }
   }
 `;
@@ -228,10 +226,10 @@ const WH = 50;
 const StyledVideoStatus = styled.div`
   display: flex;
   flex-wrap: wrap;
-  left: calc(50% - ${WH / 2}px + ${LOGO_WIDTH / 2}px);
+  left: calc(50% - ${WH / 2}px + ${(props: IThemeProvider) => props.theme.logoWidth / 2}px);
   height: ${WH}px;
   position: fixed;
-  top: calc(50vh - ${WH / 2}px + ${HEADER_HEIGHT / 2}px);
+  top: calc(50vh - ${WH / 2}px + ${(props: IThemeProvider) => props.theme.logoWidth / 2}px);
   width: ${WH}px;
   z-index: 1;
 `;
@@ -242,13 +240,13 @@ const StyledVideoStatusButton = styled.button`
   width: 50%;
   
   &:nth-child(1) {
-    border-right: 1px solid yellow;
+    border-right: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
   }
   &:nth-child(3) {
-    border-top: 1px solid yellow;
-    border-right: 1px solid yellow;
+    border-top: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
+    border-right: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
   }
   &:nth-child(4) {
-    border-top: 1px solid yellow;
+    border-top: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
   }
 `;
