@@ -1,18 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import YouTube from 'react-youtube';
 import styled from 'styled-components';
 
 // Config
-import { videoConfig, IVideoList } from 'constants/config';
+import { IVideoList } from 'constants/config';
 import { IThemeProvider } from 'constants/styles';
+import { useVideoState } from 'context/videoContext';
 
-export const Videos = ({ activeIndex }: { activeIndex: number }) => {
-  const [videos, setVideos] = useState<IVideoList>(videoConfig[activeIndex].videos);
+export const Videos = () => {
+  const { activeConfig } = useVideoState();
+  const [videos, setVideos] = useState<IVideoList>(activeConfig.videos);
   const [interval, assignInterval] = useState<number | undefined>();
-
-  useEffect(() => {
-    setVideos(videoConfig[activeIndex].videos);
-  }, [activeIndex]);
 
   const opts = {
     playerVars: {

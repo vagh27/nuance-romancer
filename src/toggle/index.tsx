@@ -3,26 +3,31 @@ import styled from 'styled-components';
 
 // Config
 import { IThemeProvider } from 'constants/styles';
+import { useVideoState } from 'context/videoContext';
 import { videoConfig, IVideoConfig } from 'constants/config';
 
-export const Toggle = ({ activeIndex }: { activeIndex: number }) => (
-  <StyledSelect
-    onChange={(e) => {
-      window.location.hash = `#${e.target.value}`;
-      window.location.reload();
-    }}
-  >
-    {videoConfig.map((videoConfig: IVideoConfig, index: number) => (
-      <option
-        key={index}
-        value={videoConfig.slug}
-        selected={activeIndex === index}
-      >
-        {videoConfig.name}
-      </option>
-    ))}
-  </StyledSelect>
-);
+export const Toggle = () => {
+  const { activeConfig } = useVideoState();
+
+  return (
+    <StyledSelect
+      defaultValue={activeConfig.slug}
+      onChange={(e) => {
+        window.location.hash = `#${e.target.value}`;
+        window.location.reload();
+      }}
+    >
+      {videoConfig.map((videoConfig: IVideoConfig, index: number) => (
+        <option
+          key={index}
+          value={videoConfig.slug}
+        >
+          {videoConfig.name}
+        </option>
+      ))}
+    </StyledSelect>
+  );
+}
 
 const StyledSelect = styled.select`
   background: #efefef;

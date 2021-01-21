@@ -8,32 +8,24 @@ import { Toggle } from 'toggle';
 import { Controls } from 'controls';
 
 // Constants
-import { videoConfig, IVideoConfig } from 'constants/config';
+import { VideoProvider } from 'context/videoContext';
 import { THEME, IThemeProvider } from 'constants/styles';
 
 function App() {
-  const index = videoConfig.find((config: IVideoConfig) => config.slug === window.location.hash.replace('#', ''))?.id || 0;
-
   return (
-    <ThemeProvider
-      theme={THEME}
-    >
-      <StyledLayout>
-        <Logo />
-        <StyledMain>
-          <StyledHeader>
-            <Toggle
-              activeIndex={index}
-            />
-            <Controls
-              activeIndex={index}
-            />
-          </StyledHeader>
-          <Videos
-            activeIndex={index}
-          />
-        </StyledMain>
-      </StyledLayout>
+    <ThemeProvider theme={THEME}>
+      <VideoProvider>
+        <StyledLayout>
+          <Logo />
+          <StyledMain>
+            <StyledHeader>
+              <Toggle />
+              <Controls />
+            </StyledHeader>
+            <Videos />
+          </StyledMain>
+        </StyledLayout>
+      </VideoProvider>
     </ThemeProvider>
   );
 }

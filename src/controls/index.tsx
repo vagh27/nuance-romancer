@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import { BuildFilled, CaretRightFilled, ForwardOutlined } from '@ant-design/icons';
 
 // Config
-import { videoConfig, IVideoList } from 'constants/config';
+import { IVideoList } from 'constants/config';
+import { useVideoState } from 'context/videoContext';
 import { IThemeProvider } from 'constants/styles';
 
-export const Controls = ({ activeIndex }: { activeIndex: number }) => {
-  const [videos, setVideos] = useState<IVideoList>(videoConfig[activeIndex].videos);
+export const Controls = () => {
+  const { activeConfig } = useVideoState();
+  const [videos, setVideos] = useState<IVideoList>(activeConfig.videos);
   const [interval, assignInterval] = useState<number | undefined>();
 
   const playAll = () => {
