@@ -1,22 +1,17 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { BuildFilled, CaretRightFilled, ForwardOutlined } from '@ant-design/icons';
+import { BuildFilled, CaretRightFilled, ForwardOutlined, PauseOutlined } from '@ant-design/icons';
 
 // Config
 import { IVideoList } from 'constants/config';
-import { useVideoState } from 'context/videoContext';
+import { useVideoDispatch, useVideoState } from 'context/videoContext';
 import { IThemeProvider } from 'constants/styles';
 
 export const Controls = () => {
-  const { activeConfig } = useVideoState();
+  const { activeConfig, playing } = useVideoState();
+  const dispatch = useVideoDispatch();
   const [videos, setVideos] = useState<IVideoList>(activeConfig.videos);
   const [interval, assignInterval] = useState<number | undefined>();
-
-  const playAll = () => {
-    Object.keys(videos).forEach(key => {
-      videos[key].target.playVideo();
-    });
-  }
 
   const staggerAll = () => {
     const videoArray = Object.keys(videos).map(key => videos[key]);
@@ -87,45 +82,42 @@ export const Controls = () => {
   //   }
   // }
 
-  // const reset = () => {
-  //   Object.keys(videos).forEach(key => {
-  //     videos[key].target.unMute();
-  //     videos[key].target.seekTo(videos[key].start);
-  //     videos[key].target.pauseVideo();
-  //   });
-
-  //   // Clear any intervals
-  //   clearInterval(interval);
-  // }
-
   return (
     <StyledControlsContainer>
-      <StyledControl
-        onClick={playAll}
-      >
-        PLAY ALL <CaretRightFilled />
-      </StyledControl>
-      <StyledControl
-        onClick={staggerAll}
-      >
-        STAGGER <BuildFilled />
-      </StyledControl>
-      <StyledControl
-        onClick={progressAll}
-      >
-        PROGRESS <ForwardOutlined />
-      </StyledControl>
-      {/* <div>
-        <StyledControl
-          onClick={pauseAll}
-        >
-          Pause All
-        </StyledControl>
-        <StyledControl
-          onClick={reset}
-        >
-          Reset
-        </StyledControl> */}
+      {!playing && (
+        <>
+          <StyledControl
+            onClick={() => dispatch({ type: 'play' })}
+          >
+            PLAY ALL <CaretRightFilled />
+          </StyledControl>
+          <StyledControl
+            onClick={staggerAll}
+          >
+            STAGGER <BuildFilled />
+          </StyledControl>
+          <StyledControl
+            onClick={progressAll}
+          >
+            PROGRESS <ForwardOutlined />
+          </StyledControl>
+        </>
+      )}
+      
+      {playing && (
+        <>
+          <StyledControl
+            onClick={() => dispatch({ type: 'pause' })}
+          >
+            Pause <PauseOutlined />
+          </StyledControl>
+          <StyledControl
+            onClick={() => dispatch({ type: 'reset' })}
+          >
+            Reset
+          </StyledControl>
+        </>
+      )}
     </StyledControlsContainer>
   );
 }

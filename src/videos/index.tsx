@@ -227,7 +227,7 @@ const StyledVideoStatus = styled.div`
   left: calc(50% - ${WH / 2}px + ${(props: IThemeProvider) => props.theme.logoWidth / 2}px);
   height: ${WH}px;
   position: fixed;
-  top: calc(50vh - ${WH / 2}px + ${(props: IThemeProvider) => props.theme.logoWidth / 2}px);
+  top: calc(50vh - ${WH / 2}px + ${(props: IThemeProvider) => props.theme.headerHeight / 2}px);
   width: ${WH}px;
   z-index: 1;
 `;

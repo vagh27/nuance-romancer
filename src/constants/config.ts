@@ -100,5 +100,30 @@ export const videoConfig: IVideoConfig[] = [
         ],
       },
     },
+  },
+  {
+    id: 3,
+    slug: 'beethoven-string-quartet-15',
+    name: 'String Quartet No. 15 in A Minor, Op. 132: III. Molto adagio',
+    videos: {
+      'iorsbZ2-NBI': {
+        start: 0,
+        milestones: [
+          46
+        ],
+      },
+      '6sj77dIxP0U': {
+        start: 1,
+        milestones: [
+          38
+        ],
+      },
+      'Yb_bs-JPyag': {
+        start: 1,
+        milestones: [
+          38
+        ],
+      },
+    },
   }
 ];

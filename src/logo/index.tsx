@@ -7,7 +7,7 @@ import { IThemeProvider } from 'constants/styles';
 export const Logo = () => {
   return (
     <StyledLogoContainer>
-      <h1>NUANCE ROMANCER</h1>
+      <h1><span>NUANCE</span> ROMANCER</h1>
     </StyledLogoContainer>
   );
 }
@@ -17,10 +17,15 @@ const StyledLogoContainer = styled.div`
   width: ${(props: IThemeProvider) => props.theme.logoWidth}px;
 
   h1 {
-    bottom: 220px;
+    bottom: 205px;
     font-size: 60px;
-    left: -261px;
+    font-weight: 100;
+    left: -246px;
     position: fixed;
     transform: rotate(-90deg);
+
+    span {
+      font-weight: 900;
+    }
   }
 `;
