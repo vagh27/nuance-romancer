@@ -75,6 +75,9 @@ export const Videos = () => {
   );
 }
 
+const WH = 50;
+const BORDER_WIDTH = 2;
+
 const StyledVideoContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -82,16 +85,18 @@ const StyledVideoContainer = styled.div`
   height: calc(100vh - ${(props: IThemeProvider) => props.theme.headerHeight}px);
 
   > div {
-    &:nth-child(1) {
-      border-right: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
-    }
-    &:nth-child(3) {
-      border-top: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
-      border-right: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
-    }
-    &:nth-child(4) {
-      border-top: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
-    }
+    ${(props: IThemeProvider ) => `
+      &:nth-child(1) {
+        border-right: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
+        border-bottom: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
+      }
+      &:nth-child(2) {
+        border-bottom: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
+      }
+      &:nth-child(3) {
+        border-right: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
+      }
+    `}
   }
 `;
 
@@ -107,14 +112,13 @@ const StyledYouTube = styled(YouTube)`
   }
 `;
 
-const WH = 50;
 const StyledVideoStatus = styled.div`
   display: flex;
   flex-wrap: wrap;
   left: calc(50% - ${WH / 2}px + ${(props: IThemeProvider) => props.theme.logoWidth / 2}px);
   height: ${WH}px;
   position: fixed;
-  top: calc(50vh - ${WH / 2}px + ${(props: IThemeProvider) => props.theme.headerHeight / 2}px);
+  top: calc(50vh - ${WH / 2}px + ${(props: IThemeProvider) => props.theme.headerHeight / 2}px - ${BORDER_WIDTH - BORDER_WIDTH / 2}px);
   width: ${WH}px;
   z-index: 1;
 `;
@@ -124,14 +128,16 @@ const StyledVideoStatusButton = styled.button`
   border: none;
   width: 50%;
   
-  &:nth-child(1) {
-    border-right: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
-  }
-  &:nth-child(3) {
-    border-top: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
-    border-right: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
-  }
-  &:nth-child(4) {
-    border-top: 1px solid ${(props: IThemeProvider ) => props.theme.primaryColor};
-  }
+  ${(props: IThemeProvider ) => `
+    &:nth-child(1) {
+      border-right: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
+    }
+    &:nth-child(3) {
+      border-top: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
+      border-right: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
+    }
+    &:nth-child(4) {
+      border-top: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
+    }
+  `}
 `;

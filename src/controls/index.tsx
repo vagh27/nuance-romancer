@@ -60,7 +60,8 @@ const StyledControlsContainer = styled.div`
 `;
 
 const StyledControl = styled.button`
-  border: 1px solid white;
+  border: none;
+  border-right: 2px solid white;
   background: black;
   color: white;
   cursor: pointer;
@@ -72,5 +73,9 @@ const StyledControl = styled.button`
   &:hover {
     background: ${(props: IThemeProvider ) => props.theme.primaryColor};
     color: black;
+  }
+
+  &:last-child {
+    border-right: none;
   }
 `;
