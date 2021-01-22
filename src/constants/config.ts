@@ -106,7 +106,7 @@ export const videoConfig: IVideoConfig[] = [
   {
     id: 3,
     slug: 'beethoven-string-quartet-15',
-    name: 'String Quartet No. 15 in A Minor, Op. 132: III. Molto adagio',
+    name: 'String Quartet No. 15 in A Minor, Molto adagio',
     videos: {
       'iorsbZ2-NBI': {
         start: 0,
@@ -127,5 +127,24 @@ export const videoConfig: IVideoConfig[] = [
         ],
       },
     },
-  }
+  },
+  {
+    id: 4,
+    slug: 'prokofiev-toccata',
+    name: 'Prokofiev: Toccata',
+    videos: {
+      'b5ROxf7iNcY': {
+        start: 21,
+        milestones: [
+          46
+        ],
+      },
+      'KoMEaX75FkY': {
+        start: 12,
+        milestones: [
+          38
+        ],
+      },
+    },
+  },
 ];
