@@ -5,14 +5,16 @@ export interface IVideoConfig {
   videos: IVideoList;
 }
 
+export interface IVideoObject {
+  start: number;
+  milestones: number[];
+  target?: any;
+  status?: number;
+  muted?: boolean;
+}
+
 export interface IVideoList {
-  [key: string]: {
-    start: number;
-    milestones: number[];
-    target?: any;
-    status?: number;
-    muted?: boolean;
-  }
+  [key: string]: IVideoObject;
 }
 
 export const videoConfig: IVideoConfig[] = [

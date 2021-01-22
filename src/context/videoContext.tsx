@@ -11,6 +11,7 @@ interface IVideoContext {
 
 interface IVideoDispatch {
   type: string;
+  duration?: number;
 }
 
 const VideoStateContext = React.createContext<IVideoContext | undefined>(undefined);
@@ -33,9 +34,15 @@ function videoReducer(state: IVideoContext, action: IVideoDispatch) {
         state.activeConfig.videos[key].target.pauseVideo();
       });
 
+      // Clear any intervals
+      if (state.interval) {
+        clearInterval(state.interval);
+      }
+
       return {
         ...state,
         playing: false,
+        interval: null,
       };
     }
     case 'reset': {
@@ -59,8 +66,66 @@ function videoReducer(state: IVideoContext, action: IVideoDispatch) {
 
       return {
         ...state,
-        interval: null,
         playing: false,
+        interval: null,
+      }
+    }
+    case 'stagger': {
+      const videoArray = Object.keys(state.activeConfig.videos).map(key => state.activeConfig.videos[key]);
+      let toPlay = 0;
+
+      // Play first video
+      videoArray[toPlay].target.playVideo();
+      
+      // Stagger the playing of the rest of the videos
+      const interval = window.setInterval(function() {
+        videoArray[toPlay].target.pauseVideo();
+        
+        toPlay = videoArray.length === toPlay + 1 ? 0 : ++toPlay;
+        videoArray[toPlay].target.playVideo();
+
+      }, action.duration);
+
+      return {
+        ...state,
+        playing: true,
+        interval,
+      }
+    }
+    case 'progress': {
+      const videos = state.activeConfig.videos;
+      const videoArray = Object.keys(videos).map(key => ({
+        key,
+        ...videos[key],
+      }));
+      let toMute = 0;
+  
+      // Play and mute all videos
+      Object.keys(videos).forEach(key => {
+        videos[key].target.mute();
+        videos[key].target.playVideo();
+      });
+  
+      // Unmute the first one
+      videos[videoArray[toMute].key].target.unMute();
+      
+      // Stagger the unmuting of the rest of the videos
+      const interval = window.setInterval(() => {
+        const newVideos = Object.assign({}, videos);
+        newVideos[videoArray[toMute].key].target.mute();
+        newVideos[videoArray[toMute].key].muted = true;
+        
+        toMute = videoArray.length === toMute + 1 ? 0 : ++toMute;
+        newVideos[videoArray[toMute].key].target.unMute();
+        newVideos[videoArray[toMute].key].muted = false;
+  
+        // setVideos(newVideos);
+      }, action.duration);
+
+      return {
+        ...state,
+        playing: true,
+        interval,
       }
     }
     default: {
@@ -71,6 +136,7 @@ function videoReducer(state: IVideoContext, action: IVideoDispatch) {
 
 function VideoProvider({ children }: { children: any }) {
   const configFromUrl = videoConfig.find((config: IVideoConfig) => config.slug === window.location.hash.replace('#', ''));
+  // @ts-ignore
   const [state, dispatch] = React.useReducer(videoReducer, {
     videoConfig,
     activeConfig: configFromUrl || videoConfig[0],
