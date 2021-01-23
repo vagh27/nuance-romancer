@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import YouTube from 'react-youtube';
 import styled from 'styled-components';
+import { SoundOutlined } from '@ant-design/icons';
+
 
 // Config
 import { IVideoList } from 'constants/config';
@@ -16,6 +18,7 @@ export const Videos = () => {
   const opts = {
     playerVars: {
       autoplay: 0,
+      controls: 0,
     },
   };
 
@@ -30,8 +33,8 @@ export const Videos = () => {
         break;
       }
       case VideoStatus.PROGRESS: {
-        progressVideos(videos, duration, () => {
-          getVideoStates();
+        progressVideos(videos, duration, (newVideos: IVideoList) => {
+          setVideos(newVideos);
         });
         break;
       }
@@ -64,32 +67,33 @@ export const Videos = () => {
     setVideos(newVideos);
   }
 
-  const getVideoStates = () => {
+  const toggleVideoAudio = (key: string) => {
     const newVideos = Object.assign({}, videos);
-    Object.keys(newVideos).forEach((key: string) => {
-      newVideos[key].status = videos[key].target.getPlayerState();
-      newVideos[key].muted = videos[key].target.isMuted();
-    });
+    let muted = false;
 
+    if (newVideos[key].target.isMuted()) {
+      newVideos[key].target.unMute();
+    } else {
+      newVideos[key].target.mute();
+      muted = true;
+    }
+
+    newVideos[key].muted = muted;
     setVideos(newVideos);
   }
 
   return (
     <>
       <StyledVideoStatus>
-        {Object.keys(videos).map((key, index) => {
-          const status = videos[key].status;
-          const muted = videos[key].muted;
-          return (
-            <StyledVideoStatusButton
-              key={index}
-              onClick={() => alert('todo')}
-              isPlaying={status === 1}
-            >
-              {muted ? 'M' : 'S'}
-            </StyledVideoStatusButton>
-          );
-        })}
+        {Object.keys(videos).map((key, index) => (
+          <StyledVideoStatusButton
+            key={index}
+            onClick={() => toggleVideoAudio(key)}
+            muted={!!videos[key].muted}
+          >
+            <SoundOutlined />
+          </StyledVideoStatusButton>
+        ))}
       </StyledVideoStatus>
       <StyledVideoContainer>
         {Object.keys(videos).map((key, index) => {
@@ -121,7 +125,7 @@ const StyledVideoContainer = styled.div`
   height: calc(100vh - ${(props: IThemeProvider) => props.theme.headerHeight}px);
 
   > div {
-    ${(props: IThemeProvider ) => `
+    ${(props: IThemeProvider) => `
       &:nth-child(1) {
         border-right: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
         border-bottom: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
@@ -159,21 +163,46 @@ const StyledVideoStatus = styled.div`
   z-index: 1;
 `;
 
+interface IVideoStatusButton extends IThemeProvider {
+  muted: boolean;
+}
 const StyledVideoStatusButton = styled.button`
-  background: ${(props: { isPlaying: boolean }) => props.isPlaying ? 'green' : 'red' };
+  background: ${(props: IVideoStatusButton) => props.theme.primaryColor};
   border: none;
+  cursor: pointer;
+  opacity: ${(props: IVideoStatusButton) => props.muted ? 0.3 : 0.7};
+  transition: all .1s linear;
   width: 50%;
   
-  ${(props: IThemeProvider ) => `
+  ${(props: IVideoStatusButton) => `
     &:nth-child(1) {
       border-right: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
+      svg {
+        transform: rotate(${225}deg);
+      } 
+    }
+    &:nth-child(2) {
+      border-right: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
+      svg {
+        transform: rotate(${-45}deg);
+      }
     }
     &:nth-child(3) {
       border-top: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
       border-right: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
+      svg {
+        transform: rotate(${135}deg);
+      }
     }
     &:nth-child(4) {
       border-top: ${BORDER_WIDTH}px solid ${props.theme.primaryColor};
+      svg {
+        transform: rotate(${45}deg);
+      }
     }
   `}
+
+  &:hover {
+    opacity: 1;
+  }
 `;

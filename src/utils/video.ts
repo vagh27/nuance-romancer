@@ -25,7 +25,7 @@ export const staggerVideos = (videos: IVideoList, duration: number) => {
   }, duration);
 }
 
-export const progressVideos = (videos: IVideoList, duration: number, cb: () => void) => {
+export const progressVideos = (videos: IVideoList, duration: number, cb: (videos: IVideoList) => void) => {
   const videoArray = Object.keys(videos).map(key => ({
     key,
     ...videos[key],
@@ -51,7 +51,7 @@ export const progressVideos = (videos: IVideoList, duration: number, cb: () => v
     newVideos[videoArray[toMute].key].target.unMute();
     newVideos[videoArray[toMute].key].muted = false;
 
-    cb();
+    cb(newVideos);
   }, duration);
 }
 

@@ -62,7 +62,8 @@ const StyledControlsContainer = styled.div`
 
 const StyledControl = styled.button`
   border: none;
-  border-right: 2px solid white;
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
   background: black;
   color: white;
   cursor: pointer;
