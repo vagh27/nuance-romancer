@@ -58,11 +58,15 @@ export const videoConfig: IVideoConfig[] = [
           46
         ],
       },
-      'GhBXx-2PadM': {
-        start: 3,
-        milestones: [
-          38
-        ],
+      // 'GhBXx-2PadM': {
+      //   start: 3,
+      //   milestones: [
+      //     38
+      //   ],
+      // },
+      'rQQHRC-T8WM': {
+        start: 2,
+        milestones: [],
       },
     },
   },
