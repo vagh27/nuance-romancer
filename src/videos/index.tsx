@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import YouTube from 'react-youtube';
 import styled from 'styled-components';
 
 // Config
 import { IVideoList } from 'constants/config';
 import { IThemeProvider } from 'constants/styles';
-import { useVideoState } from 'context/videoContext';
+import { useVideoState, VideoStatus } from 'context/videoContext';
+
+import { pauseVideos, playVideos, progressVideos, resetVideos, staggerVideos } from 'utils/video';
 
 export const Videos = () => {
-  const { activeConfig } = useVideoState();
+  const { activeConfig, duration, status } = useVideoState();
   const [videos, setVideos] = useState<IVideoList>(activeConfig.videos);
 
   const opts = {
@@ -17,17 +19,41 @@ export const Videos = () => {
     },
   };
 
-  const onReady = (e: any, key: string) => {
-    const newVideos = Object.assign({}, videos);
+  useEffect(() => {
+    switch (status) {
+      case VideoStatus.PLAY: {
+        playVideos(videos);
+        break;
+      }
+      case VideoStatus.STAGGER: {
+        staggerVideos(videos, duration);
+        break;
+      }
+      case VideoStatus.PROGRESS: {
+        progressVideos(videos, duration, () => {
+          getVideoStates();
+        });
+        break;
+      }
+      case VideoStatus.PAUSE: {
+        pauseVideos(videos);
+        break;
+      }
+      case VideoStatus.READY: {
+        resetVideos(videos);
+        break;
+      }
+    };
+  }, [status]);
 
-    if (!newVideos[key].target) {
-      newVideos[key].target = e.target;
-      newVideos[key].muted = e.target.unMute();
-      newVideos[key].status = e.target.getPlayerState();
-      newVideos[key].muted = e.target.isMuted();
+  const onReady = (e: any, key: string) => {
+    if (!videos[key].target) {
+      videos[key].target = e.target;
+      videos[key].muted = e.target.unMute();
+      videos[key].status = e.target.getPlayerState();
+      videos[key].muted = e.target.isMuted();
       e.target.seekTo(videos[key].start);
       e.target.pauseVideo();
-      setVideos(newVideos);
     }
   }
   
@@ -36,6 +62,15 @@ export const Videos = () => {
     newVideos[key].status = e.target.getPlayerState();
     newVideos[key].muted = e.target.isMuted();
     setVideos(newVideos);
+  }
+
+  const getVideoStates = () => {
+    Object.keys(videos).forEach((key: string) => {
+      videos[key].status = videos[key].target.getPlayerState();
+      videos[key].muted = videos[key].target.isMuted();
+    });
+
+    setVideos(videos);
   }
 
   return (

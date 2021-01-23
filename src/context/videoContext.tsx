@@ -2,16 +2,26 @@ import React from 'react';
 
 import { videoConfig, IVideoConfig } from 'constants/config';
 
+export enum VideoStatus {
+  PLAY='play',
+  PAUSE='pause',
+  STAGGER='stagger',
+  PROGRESS='progress',
+  READY='ready',
+  LOADING='loading',
+}
+
 interface IVideoContext {
   videoConfig: IVideoConfig[];
   activeConfig: IVideoConfig;
-  playing: boolean;
-  interval: null | number;
+  status: VideoStatus;
+  duration: number;
 }
 
 interface IVideoDispatch {
   type: string;
   duration?: number;
+  status?: VideoStatus;
 }
 
 const VideoStateContext = React.createContext<IVideoContext | undefined>(undefined);
@@ -19,114 +29,12 @@ const VideoDispatchContext = React.createContext<any | undefined>(undefined);
 
 function videoReducer(state: IVideoContext, action: IVideoDispatch) {
   switch (action.type) {
-    case 'play': {
-      Object.keys(state.activeConfig.videos).forEach(key => {
-        state.activeConfig.videos[key].target.playVideo();
-      });
-
+    case 'SET_STATUS': {
       return {
         ...state,
-        playing: true,
+        duration: action.duration,
+        status: action.status,
       };
-    }
-    case 'pause': {
-      Object.keys(state.activeConfig.videos).forEach(key => {
-        state.activeConfig.videos[key].target.pauseVideo();
-      });
-
-      // Clear any intervals
-      if (state.interval) {
-        clearInterval(state.interval);
-      }
-
-      return {
-        ...state,
-        playing: false,
-        interval: null,
-      };
-    }
-    case 'reset': {
-      Object.keys(state.activeConfig.videos).forEach(key => {
-        const videos = state.activeConfig.videos;
-
-        // Unmute
-        videos[key].target.unMute();
-
-        // Seek to beginning
-        videos[key].target.seekTo(videos[key].start);
-
-        // Pause
-        videos[key].target.pauseVideo();
-      });
-  
-      // Clear any intervals
-      if (state.interval) {
-        clearInterval(state.interval);
-      }
-
-      return {
-        ...state,
-        playing: false,
-        interval: null,
-      }
-    }
-    case 'stagger': {
-      const videoArray = Object.keys(state.activeConfig.videos).map(key => state.activeConfig.videos[key]);
-      let toPlay = 0;
-
-      // Play first video
-      videoArray[toPlay].target.playVideo();
-      
-      // Stagger the playing of the rest of the videos
-      const interval = window.setInterval(function() {
-        videoArray[toPlay].target.pauseVideo();
-        
-        toPlay = videoArray.length === toPlay + 1 ? 0 : ++toPlay;
-        videoArray[toPlay].target.playVideo();
-
-      }, action.duration);
-
-      return {
-        ...state,
-        playing: true,
-        interval,
-      }
-    }
-    case 'progress': {
-      const videos = state.activeConfig.videos;
-      const videoArray = Object.keys(videos).map(key => ({
-        key,
-        ...videos[key],
-      }));
-      let toMute = 0;
-  
-      // Play and mute all videos
-      Object.keys(videos).forEach(key => {
-        videos[key].target.mute();
-        videos[key].target.playVideo();
-      });
-  
-      // Unmute the first one
-      videos[videoArray[toMute].key].target.unMute();
-      
-      // Stagger the unmuting of the rest of the videos
-      const interval = window.setInterval(() => {
-        const newVideos = Object.assign({}, videos);
-        newVideos[videoArray[toMute].key].target.mute();
-        newVideos[videoArray[toMute].key].muted = true;
-        
-        toMute = videoArray.length === toMute + 1 ? 0 : ++toMute;
-        newVideos[videoArray[toMute].key].target.unMute();
-        newVideos[videoArray[toMute].key].muted = false;
-  
-        // setVideos(newVideos);
-      }, action.duration);
-
-      return {
-        ...state,
-        playing: true,
-        interval,
-      }
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`)
@@ -140,8 +48,8 @@ function VideoProvider({ children }: { children: any }) {
   const [state, dispatch] = React.useReducer(videoReducer, {
     videoConfig,
     activeConfig: configFromUrl || videoConfig[0],
-    playing: false,
-    interval: null,
+    status: VideoStatus.LOADING,
+    duration: 5000,
   });
 
   return (

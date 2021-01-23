@@ -2,26 +2,27 @@ import styled from 'styled-components';
 import { BuildFilled, CaretRightFilled, ForwardOutlined, PauseOutlined } from '@ant-design/icons';
 
 // Config
-import { useVideoDispatch, useVideoState } from 'context/videoContext';
+import { useVideoDispatch, useVideoState, VideoStatus } from 'context/videoContext';
 import { IThemeProvider } from 'constants/styles';
 
 export const Controls = () => {
-  const { playing } = useVideoState();
+  const { status } = useVideoState();
   const dispatch = useVideoDispatch();
+  const playing = status === VideoStatus.PLAY || status === VideoStatus.STAGGER || status === VideoStatus.PROGRESS;
 
   return (
     <StyledControlsContainer>
       {!playing && (
         <>
           <StyledControl
-            onClick={() => dispatch({ type: 'play' })}
+            onClick={() => dispatch({ type: 'SET_STATUS', status: VideoStatus.PLAY })}
           >
             PLAY ALL <CaretRightFilled />
           </StyledControl>
           <StyledControl
             onClick={() => {
               const duration = prompt('Please enter an interval duration in seconds!');
-              dispatch({ type: 'stagger', duration: Number(duration) * 1000 });
+              dispatch({ type: 'SET_STATUS', status: VideoStatus.STAGGER, duration: Number(duration) * 1000 });
             }}
           >
             STAGGER <BuildFilled />
@@ -29,7 +30,7 @@ export const Controls = () => {
           <StyledControl
             onClick={() => {
               const duration = prompt('Please enter an interval duration in seconds!');
-              dispatch({ type: 'progress', duration: Number(duration) * 1000 });
+              dispatch({ type: 'SET_STATUS', status: VideoStatus.PROGRESS, duration: Number(duration) * 1000 });
             }}
           >
             PROGRESS <ForwardOutlined />
@@ -40,12 +41,12 @@ export const Controls = () => {
       {playing && (
         <>
           <StyledControl
-            onClick={() => dispatch({ type: 'pause' })}
+            onClick={() => dispatch({ type: 'SET_STATUS', status: VideoStatus.PAUSE })}
           >
             Pause <PauseOutlined />
           </StyledControl>
           <StyledControl
-            onClick={() => dispatch({ type: 'reset' })}
+            onClick={() => dispatch({ type: 'SET_STATUS', status: VideoStatus.READY })}
           >
             Reset
           </StyledControl>
