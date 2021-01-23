@@ -65,12 +65,13 @@ export const Videos = () => {
   }
 
   const getVideoStates = () => {
-    Object.keys(videos).forEach((key: string) => {
-      videos[key].status = videos[key].target.getPlayerState();
-      videos[key].muted = videos[key].target.isMuted();
+    const newVideos = Object.assign({}, videos);
+    Object.keys(newVideos).forEach((key: string) => {
+      newVideos[key].status = videos[key].target.getPlayerState();
+      newVideos[key].muted = videos[key].target.isMuted();
     });
 
-    setVideos(videos);
+    setVideos(newVideos);
   }
 
   return (
