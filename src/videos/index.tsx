@@ -47,7 +47,7 @@ export const Videos = () => {
         break;
       }
     };
-  }, [status]);
+  }, [status, duration, videos]);
 
   const onReady = (e: any, key: string) => {
     if (!videos[key].target) {
