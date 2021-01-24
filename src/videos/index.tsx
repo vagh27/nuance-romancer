@@ -3,7 +3,6 @@ import YouTube from 'react-youtube';
 import styled from 'styled-components';
 import { SoundOutlined } from '@ant-design/icons';
 
-
 // Config
 import { IVideoList } from 'constants/config';
 import { IThemeProvider } from 'constants/styles';
@@ -47,7 +46,7 @@ export const Videos = () => {
         break;
       }
     };
-  }, [status, duration, videos]);
+  }, [status]);
 
   const onReady = (e: any, key: string) => {
     if (!videos[key].target) {
