@@ -1,4 +1,5 @@
-import { IVideoList } from 'constants/config';
+// Config
+import { IVideoConfig, IVideoList } from 'constants/config';
 
 let interval: number | undefined = undefined;
 
@@ -82,4 +83,35 @@ export const resetVideos = (videos: IVideoList) => {
   if (interval) {
     clearInterval(interval);
   }
+}
+
+export const configFromUrl = (hash: string, videoConfigArray: IVideoConfig[]): IVideoConfig | null => {
+  const strippedHash = hash.replace('#', '');
+  let videoConfig = videoConfigArray.find((config: IVideoConfig) => config.slug === strippedHash);
+  
+  if (strippedHash === 'custom') {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    videoConfig = {
+      id: 9999,
+      slug: 'custom',
+      name: 'Custom',
+      videos: {
+        [urlParams.get('v1') || 'Z50Ooqv1GFg']: {
+          start: Number(urlParams.get('s1')) || 6,
+          milestones: [],
+        },
+        [urlParams.get('v2') || '4HAIHSqiwAA']: {
+          start: Number(urlParams.get('s2')) || 4,
+          milestones: [],
+        },
+      }
+    }
+  }
+
+  if (!videoConfig) {
+    return null;
+  }
+
+  return videoConfig;
 }

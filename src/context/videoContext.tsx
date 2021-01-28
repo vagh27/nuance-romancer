@@ -1,6 +1,10 @@
 import React from 'react';
 
+// Config
 import { videoConfig, IVideoConfig } from 'constants/config';
+
+// Utils
+import { configFromUrl } from 'utils/video';
 
 export enum VideoStatus {
   PLAY='play',
@@ -43,11 +47,10 @@ function videoReducer(state: IVideoContext, action: IVideoDispatch) {
 }
 
 function VideoProvider({ children }: { children: any }) {
-  const configFromUrl = videoConfig.find((config: IVideoConfig) => config.slug === window.location.hash.replace('#', ''));
   // @ts-ignore
   const [state, dispatch] = React.useReducer(videoReducer, {
     videoConfig,
-    activeConfig: configFromUrl || videoConfig[0],
+    activeConfig: configFromUrl(window.location.hash, videoConfig) || videoConfig[0],
     status: VideoStatus.LOADING,
     duration: 5000,
   });
