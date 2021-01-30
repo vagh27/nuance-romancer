@@ -39,7 +39,7 @@ const StyledLayout = styled.div<IStyledLayout>`
     position: absolute;
     transition: all .2s linear;
     width: 100%;
-    z-index: 1;
+    z-index: -1;
 
     ${props => props.toggleNav && `
       opacity: 0.75;

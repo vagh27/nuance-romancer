@@ -22,7 +22,9 @@ export const Controls = () => {
           <StyledControl
             onClick={() => {
               const duration = prompt('Please enter an interval duration in seconds!');
-              dispatch({ type: 'SET_STATUS', status: VideoStatus.STAGGER, duration: Number(duration) * 1000 });
+              if (Number(duration)) {
+                dispatch({ type: 'SET_STATUS', status: VideoStatus.STAGGER, duration: Number(duration) * 1000 });
+              }
             }}
           >
             STAGGER <BuildFilled />
@@ -30,7 +32,9 @@ export const Controls = () => {
           <StyledControl
             onClick={() => {
               const duration = prompt('Please enter an interval duration in seconds!');
-              dispatch({ type: 'SET_STATUS', status: VideoStatus.PROGRESS, duration: Number(duration) * 1000 });
+              if (Number(duration)) {
+                dispatch({ type: 'SET_STATUS', status: VideoStatus.PROGRESS, duration: Number(duration) * 1000 });
+              }
             }}
           >
             PROGRESS <ForwardOutlined />
