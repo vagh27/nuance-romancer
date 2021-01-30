@@ -2,40 +2,43 @@ import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 
 // Components
-import { Logo } from 'logo';
-import { Videos } from 'videos';
-import { Toggle } from 'toggle';
 import { Controls } from 'controls';
+import { Layout } from 'layout';
+import { Logo } from 'logo';
+import { Menu } from 'menu';
+import { Toggle } from 'toggle';
+import { Videos } from 'videos';
+
+// Context
+import { GlobalProvider } from 'context/globalContext';
+import { VideoProvider } from 'context/videoContext';
 
 // Constants
-import { VideoProvider } from 'context/videoContext';
-import { THEME, IThemeProvider } from 'constants/styles';
+import { THEME } from 'constants/styles';
 
 function App() {
   return (
     <ThemeProvider theme={THEME}>
-      <VideoProvider>
-        <StyledLayout>
-          <Logo />
-          <StyledMain>
-            <StyledHeader>
-              <Toggle />
-              <Controls />
-            </StyledHeader>
-            <Videos />
-          </StyledMain>
-        </StyledLayout>
-      </VideoProvider>
+      <GlobalProvider>
+        <VideoProvider>
+          <Menu />
+          <Layout>
+            <Logo />
+            <StyledMain>
+              <StyledHeader>
+                <Toggle />
+                <Controls />
+              </StyledHeader>
+              <Videos />
+            </StyledMain>
+          </Layout>
+        </VideoProvider>
+      </GlobalProvider>
     </ThemeProvider>
   );
 }
 
 export default App;
-
-const StyledLayout = styled.div`
-  background: ${(props: IThemeProvider ) => props.theme.primaryColor};
-  display: flex;
-`;
 
 const StyledMain = styled.div`
   flex: 1;

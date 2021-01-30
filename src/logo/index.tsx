@@ -13,14 +13,14 @@ export const Logo = () => {
 }
 
 const StyledLogoContainer = styled.div`
-  background: ${(props: IThemeProvider ) => props.theme.primaryColor};
-  width: ${(props: IThemeProvider) => props.theme.logoWidth}px;
+  border-left: 12px solid white;
+  width: ${(props: IThemeProvider) => props.theme.logoWidth - 12}px;
 
   h1 {
     bottom: 205px;
     font-size: 60px;
     font-weight: 100;
-    left: -246px;
+    left: -255px;
     position: fixed;
     transform: rotate(-90deg);
 
