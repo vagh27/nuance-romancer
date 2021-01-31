@@ -97,11 +97,11 @@ export const configFromUrl = (hash: string, videoConfigArray: IVideoConfig[]): I
       slug: 'custom',
       name: 'Custom',
       videos: {
-        [urlParams.get('v1') || 'Z50Ooqv1GFg']: {
-          start: Number(urlParams.get('s1')) || 6,
+        [urlParams.get('v1') || 'e6AuSs55t64']: {
+          start: Number(urlParams.get('s1')) || 8,
           milestones: [],
         },
-        [urlParams.get('v2') || '4HAIHSqiwAA']: {
+        [urlParams.get('v2') || 'CFQQsu6VBYA']: {
           start: Number(urlParams.get('s2')) || 4,
           milestones: [],
         },
