@@ -144,4 +144,28 @@ export const videoConfig: IVideoConfig[] = [
       },
     },
   },
+
+  {
+    id: 6,
+    slug: 'prokofiev-piano-sonata-7-precipitato',
+    name: 'Prokofiev: Piano Sonata No. 7 in B-flat min, Precipitato',
+    videos: {
+      'omx6jg82bJc': {
+        start: 0,
+        milestones: [],
+      },
+      '7U-L_n9tAJM': {
+        start: 16,
+        milestones: [],
+      },
+      'Zwji3k0v_AM': {
+        start: 0,
+        milestones: [],
+      },
+      'k-sg7VGUR-A': {
+        start: 0,
+        milestones: [],
+      },
+    },
+  },
 ];
