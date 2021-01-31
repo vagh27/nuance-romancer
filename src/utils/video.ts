@@ -102,7 +102,7 @@ export const configFromUrl = (hash: string, videoConfigArray: IVideoConfig[]): I
           milestones: [],
         },
         [urlParams.get('v2') || 'CFQQsu6VBYA']: {
-          start: Number(urlParams.get('s2')) || 4,
+          start: Number(urlParams.get('s2')) || 6,
           milestones: [],
         },
       }

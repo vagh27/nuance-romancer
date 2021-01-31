@@ -6,6 +6,12 @@ import { videoConfig, IVideoConfig } from 'constants/config';
 // Utils
 import { configFromUrl } from 'utils/video';
 
+// Append custom video config
+const customVideoConfig = configFromUrl(window.location.hash, videoConfig);
+if (customVideoConfig) {
+  videoConfig.push(customVideoConfig);
+}
+
 export enum VideoStatus {
   PLAY='play',
   PAUSE='pause',
@@ -50,7 +56,7 @@ function VideoProvider({ children }: { children: any }) {
   // @ts-ignore
   const [state, dispatch] = React.useReducer(videoReducer, {
     videoConfig,
-    activeConfig: configFromUrl(window.location.hash, videoConfig) || videoConfig[0],
+    activeConfig: customVideoConfig || videoConfig[0],
     status: VideoStatus.LOADING,
     duration: 5000,
   });

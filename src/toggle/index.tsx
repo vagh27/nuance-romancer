@@ -4,10 +4,10 @@ import styled from 'styled-components';
 // Config
 import { IThemeProvider } from 'constants/styles';
 import { useVideoState } from 'context/videoContext';
-import { videoConfig, IVideoConfig } from 'constants/config';
+import { IVideoConfig } from 'constants/config';
 
 export const Toggle = () => {
-  const { activeConfig } = useVideoState();
+  const { activeConfig, videoConfig } = useVideoState();
 
   return (
     <StyledSelect
