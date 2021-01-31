@@ -8,7 +8,7 @@ import { configFromUrl } from 'utils/video';
 
 // Append custom video config
 const customVideoConfig = configFromUrl(window.location.hash, videoConfig);
-if (customVideoConfig) {
+if (customVideoConfig?.slug === 'custom') {
   videoConfig.push(customVideoConfig);
 }
 

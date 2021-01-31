@@ -66,7 +66,7 @@ export const videoConfig: IVideoConfig[] = [
   {
     id: 2,
     slug: 'beethoven-string-quartet-15',
-    name: 'String Quartet No. 15 in A Minor, Molto adagio',
+    name: 'Beethoven: String Quartet No. 15 in A Minor, Molto adagio',
     videos: {
       'iorsbZ2-NBI': {
         start: 0,
@@ -163,7 +163,7 @@ export const videoConfig: IVideoConfig[] = [
         milestones: [],
       },
       'k-sg7VGUR-A': {
-        start: 0,
+        start: 1,
         milestones: [],
       },
     },
