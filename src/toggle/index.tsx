@@ -13,8 +13,7 @@ export const Toggle = () => {
     <StyledSelect
       defaultValue={activeConfig.slug}
       onChange={(e) => {
-        window.location.hash = `#${e.target.value}`;
-        window.location.reload();
+        window.location.href = `${window.location.origin}#${e.target.value}`;
       }}
     >
       {videoConfig.map((videoConfig: IVideoConfig, index: number) => (
