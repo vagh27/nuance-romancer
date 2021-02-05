@@ -85,27 +85,36 @@ export const resetVideos = (videos: IVideoList) => {
   }
 }
 
+const assembleVideoObject = (urlParams: URLSearchParams): IVideoList => {
+  const videos: IVideoList = {};
+
+  [1,2,3,4].forEach((num: number) => {
+    const video = urlParams.get(`v${num}`);
+    const start: string | null = urlParams.get(`s${num}`);
+
+    if (video) {
+      videos[video] = {
+        start: Number(start) || 1,
+        milestones: [],
+      };
+    }
+  });
+
+  return videos;
+}
+
 export const configFromUrl = (hash: string, videoConfigArray: IVideoConfig[]): IVideoConfig | null => {
   const strippedHash = hash.replace('#', '');
   let videoConfig = videoConfigArray.find((config: IVideoConfig) => config.slug === strippedHash);
   
   if (strippedHash === 'custom') {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
 
     videoConfig = {
       id: 9999,
       slug: 'custom',
       name: 'Custom',
-      videos: {
-        [urlParams.get('v1') || 'e6AuSs55t64']: {
-          start: Number(urlParams.get('s1')) || 8,
-          milestones: [],
-        },
-        [urlParams.get('v2') || 'CFQQsu6VBYA']: {
-          start: Number(urlParams.get('s2')) || 6,
-          milestones: [],
-        },
-      }
+      videos: assembleVideoObject(urlParams),
     }
   }
 
